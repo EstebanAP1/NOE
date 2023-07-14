@@ -1,6 +1,6 @@
 <?php
 
-const BASE_URL = "http://localhost/sistema_inventarios";
+const BASE_URL = "http://localhost/NOE";
 
 //Zona horaria
 date_default_timezone_set('America/Bogota');

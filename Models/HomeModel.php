@@ -6,5 +6,6 @@ class HomeModel extends MySql
     {
         parent::__construct();
     }
+
 }
 ?>

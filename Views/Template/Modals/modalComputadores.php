@@ -19,7 +19,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-4">
                             <label for="listTipo">Tipo</label>
-                            <select class="selectpicker show-tick show-menu-arrow form-control" id="listTipo"
+                            <select class="selectpicker show-tick show-menu-arrow form-control valid" id="listTipo"
                                 name="listTipo">
                                 <option value="ESCRITORIO">Escritorio</option>
                                 <option value="PORTATIL">Portatil</option>
@@ -27,38 +27,38 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listMarca">Marca</label>
-                            <select class="show-tick show-menu-arrow form-control" data-size="6" data-live-search="true"
-                                title="Selecciona la marca" id="listMarca" name="listMarca">
+                            <select class="show-tick show-menu-arrow form-control valid" data-size="6"
+                                data-live-search="true" title="Selecciona la marca" id="listMarca" name="listMarca">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listModelo">Modelo</label>
-                            <select class="show-tick show-menu-arrow form-control" data-size="6" data-live-search="true"
-                                title="Selecciona el modelo" id="listModelo" name="listModelo">
+                            <select class="show-tick show-menu-arrow form-control valid" data-size="6"
+                                data-live-search="true" title="Selecciona el modelo" id="listModelo" name="listModelo">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listCPU">Procesador</label>
-                            <select class="show-tick show-menu-arrow form-control" data-size="6" data-live-search="true"
-                                title="Selecciona el procesador" id="listCPU" name="listCPU">
+                            <select class="show-tick show-menu-arrow form-control valid" data-size="6"
+                                data-live-search="true" title="Selecciona el procesador" id="listCPU" name="listCPU">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listDisco">Disco</label>
-                            <select class="show-tick show-menu-arrow form-control" data-size="6" data-live-search="true"
-                                title="Selecciona el espacio" id="listDisco" name="listDisco">
+                            <select class="show-tick show-menu-arrow form-control valid" data-size="6"
+                                data-live-search="true" title="Selecciona el espacio" id="listDisco" name="listDisco">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listRAM">RAM</label>
-                            <select class="show-tick show-menu-arrow form-control" data-size="6" data-live-search="true"
-                                title="Selecciona la RAM" id="listRAM" name="listRAM">
+                            <select class="show-tick show-menu-arrow form-control valid" data-size="6"
+                                data-live-search="true" title="Selecciona la RAM" id="listRAM" name="listRAM">
                             </select>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="listProcedencia">Procedencia</label>
-                            <select class="selectpicker show-tick show-menu-arrow form-control" id="listProcedencia"
-                                name="listProcedencia">
+                            <select class="selectpicker show-tick show-menu-arrow form-control valid"
+                                id="listProcedencia" name="listProcedencia">
                                 <option value="PROPIO">Propio</option>
                                 <option value="RENTADO">Rentado</option>
                             </select>
@@ -70,8 +70,8 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtSerialTIC">Serial TIC</label>
-                            <input type="text" class="form-control" id="txtSerialTIC" name="txtSerialTIC"
-                                placeholder="Serial TIC PC"></input>
+                            <input type="text" class="form-control valid validEmpty" id="txtSerialTIC"
+                                name="txtSerialTIC" placeholder="Serial TIC PC"></input>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtPantalla">Pantalla</label>
@@ -80,8 +80,8 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtPantallaTIC">Pantalla TIC</label>
-                            <input type="text" class="form-control" id="txtPantallaTIC" name="txtPantallaTIC"
-                                placeholder="Pantalla TIC">
+                            <input type="text" class="form-control valid validEmpty" id="txtPantallaTIC"
+                                name="txtPantallaTIC" placeholder="Pantalla TIC">
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtTeclado">Teclado</label>
@@ -90,8 +90,8 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtTecladoTIC">Teclado TIC</label>
-                            <input type="text" class="form-control" id="txtTecladoTIC" name="txtTecladoTIC"
-                                placeholder="Teclado TIC"></input>
+                            <input type="text" class="form-control valid validEmpty" id="txtTecladoTIC"
+                                name="txtTecladoTIC" placeholder="Teclado TIC"></input>
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtMouse">Mouse</label>
@@ -100,7 +100,7 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtMouseTIC">Mouse TIC</label>
-                            <input type="text" class="form-control" id="txtMouseTIC" name="txtMouseTIC"
+                            <input type="text" class="form-control valid validEmpty" id="txtMouseTIC" name="txtMouseTIC"
                                 placeholder="Mouse TIC"></input>
                         </div>
                         <div class="form-group col-md-2">
@@ -110,8 +110,8 @@
                         </div>
                         <div class="form-group col-md-2">
                             <label for="txtCargadorTIC">Cargador TIC</label>
-                            <input type="text" class="form-control" id="txtCargadorTIC" name="txtCargadorTIC"
-                                placeholder="Cargador TIC"></input>
+                            <input type="text" class="form-control valid validEmpty" id="txtCargadorTIC"
+                                name="txtCargadorTIC" placeholder="Cargador TIC"></input>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="txtNombrePC">Nombre del equipo</label>

@@ -4,6 +4,7 @@ setNav($data);
 getModal('modalComputadores', $data);
 ?>
 
+<div id="contentAjax"></div>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">

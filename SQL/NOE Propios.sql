@@ -136,7 +136,7 @@ SELECT * FROM funcionario
 
 SELECT * FROM comentarios
 
-SELECT id_user FROM usuario WHERE (username = 'esteban.padilla' AND id = 1) OR (id_user = 1001995175 AND id = 1)
+SELECT * FROM usuario
 
 SELECT id_user FROM usuario WHERE username = 'auxiliar.prueba' OR id_user = 2
 

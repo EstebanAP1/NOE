@@ -102,6 +102,7 @@ $('.btnCreatePC').click(function () {
     document.querySelector("#btnActionForm").classList.replace("btn-warning", "btn-primary");
     $('#accion').val('crear');
     $('#txtSerial').removeAttr('readonly');
+    $('.valid').removeAttr('disabled');
     $('#txtSerialTIC').prop('disabled', 'true');
     $('#txtPantallaTIC').prop('disabled', 'true');
     $('#txtTecladoTIC').prop('disabled', 'true');
@@ -250,26 +251,98 @@ $('#formComputador').on('submit', function (e) {
                             actualData: objData.actualData
                         }
 
-                        console.log(commentData);
+                        $('.modalFormComputadores').modal('hide');
+                        $('#formComputador').trigger('reset');
 
-                        var ajaxUrlComments = base_url + '/Computadores/setComments';
+                        tableComputador.ajax.reload();
+
+                        var ajaxUrlComments = base_url + '/Comentarios/setComments';
                         $.ajax({
                             type: 'POST',
                             url: ajaxUrlComments,
                             data: commentData,
                             success: function (response) {
+                                var objData = JSON.parse(response);
 
+                                if (objData.status) {
+                                    var sw = false;
+                                    var cambios = new Array();
+
+                                    Object.entries(objData.cambios).forEach(([name, value]) => [
+                                        value > 0 ? sw = true : ''
+                                    ]);
+
+                                    if (sw) {
+                                        var ajaxUrlComments = base_url + '/Comentarios/getComments';
+                                        $.ajax({
+                                            type: "POST",
+                                            url: ajaxUrlComments,
+                                            data: objData,
+                                            success: function (response) {
+                                                document.querySelector("#contentAjax").innerHTML = response;
+                                                $('.modalAddComments').modal('show');
+                                                $('#formComentarios').on('submit', function (e) {
+                                                    e.preventDefault();
+
+                                                    $('#divLoading').css('display', 'flex');
+
+                                                    var formData = $('#formComentarios').serializeArray();
+
+                                                    var ajaxUrlComments = base_url + '/Comentarios/updateComments';
+                                                    $.ajax({
+                                                        type: "POST",
+                                                        url: ajaxUrlComments,
+                                                        data: formData,
+                                                        success: function (response) {
+                                                            var objData = JSON.parse(response);
+
+                                                            $('#divLoading').css('display', 'none');
+
+                                                            if (objData.status) {
+                                                                $('.modalAddComments').modal('hide');
+                                                                Swal.fire({
+                                                                    icon: 'success',
+                                                                    text: objData.msg
+                                                                });
+                                                            } else {
+                                                                Swal.fire({
+                                                                    icon: 'error',
+                                                                    text: objData.msg
+                                                                });
+                                                            }
+                                                        }
+                                                    });
+                                                });
+                                            }
+                                        });
+                                    } else {
+                                        $('.modalFormComputadores').modal('hide');
+                                        $('#formComputador').trigger('reset');
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Computadores',
+                                            text: objData.msg
+                                        });
+                                    }
+                                } else {
+                                    $('.modalFormComputadores').modal('hide');
+                                    $('#formComputador').trigger('reset');
+                                    Swal.fire({
+                                        icon: 'error',
+                                        text: objData.msg
+                                    });
+                                }
                             }
                         });
+                    } else {
+                        $('.modalFormComputadores').modal('hide');
+                        $('#formComputador').trigger('reset');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Computadores',
+                            text: objData.msg
+                        });
                     }
-                    $('.modalFormComputadores').modal('hide');
-                    $('#formComputador').trigger('reset');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Computadores',
-                        text: objData.msg
-                    });
-                    tableComputador.ajax.reload();
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -300,20 +373,20 @@ $('#tableComputador').on('click', 'button.btnEditPC', function () {
     $('#btnText').text('Actualizar');
 
     $('#accion').val('editar');
+    $('#listTipo').prop('disabled', 'true');
+    $('#listMarca').prop('disabled', 'true');
+    $('#listModelo').prop('disabled', 'true');
+    $('#listCPU').prop('disabled', 'true');
+    $('#listDisco').prop('disabled', 'true');
+    $('#listRAM').prop('disabled', 'true');
+    $('#listProcedencia').prop('disabled', 'true');
     $('#txtSerial').prop('readonly', 'true');
-    if ($('#listProcedencia').val() == 'PROPIO') {
-        $('#txtSerialTIC').prop('disabled', 'true');
-        $('#txtPantallaTIC').prop('disabled', 'true');
-        $('#txtTecladoTIC').prop('disabled', 'true');
-        $('#txtMouseTIC').prop('disabled', 'true');
-        $('#txtCargadorTIC').prop('disabled', 'true');
-    } else {
-        $('#txtSerialTIC').removeAttr('disabled');
-        $('#txtPantallaTIC').removeAttr('disabled');
-        $('#txtTecladoTIC').removeAttr('disabled');
-        $('#txtMouseTIC').removeAttr('disabled');
-        $('#txtCargadorTIC').removeAttr('disabled');
-    }
+    $('#txtSerialTIC').prop('disabled', 'true');
+    $('#txtPantallaTIC').prop('disabled', 'true');
+    $('#txtTecladoTIC').prop('disabled', 'true');
+    $('#txtMouseTIC').prop('disabled', 'true');
+    $('#txtCargadorTIC').prop('disabled', 'true');
+
 
     $('.valid').removeClass('is-invalid');
 

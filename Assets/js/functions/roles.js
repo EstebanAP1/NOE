@@ -202,7 +202,7 @@ $('#tableRoles').on('click', 'button.btnPermisosRol', function () {
         success: function (response) {
             document.querySelector("#contentAjax").innerHTML = response;
             $('.modalAddPermisos').modal('show');
-            var formPermisos = $('#formPermisos').on('submit', function (e) {
+            $('#formPermisos').on('submit', function (e) {
                 e.preventDefault();
 
                 $('#divLoading').css('display', 'flex');
@@ -218,12 +218,12 @@ $('#tableRoles').on('click', 'button.btnPermisosRol', function () {
 
                         var objData = JSON.parse(response);
                         if (objData.status) {
+                            $('.modalAddPermisos').modal('hide');
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Permisos de usuario',
                                 text: objData.msg
                             });
-                            $('.modalAddPermisos').modal('hide');
                         } else {
                             Swal.fire({
                                 icon: 'error',

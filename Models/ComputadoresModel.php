@@ -84,14 +84,13 @@ class ComputadoresModel extends MySql
                 $datos['area'] = $request_funcionario['area'];
                 $datos['cargo'] = $request_funcionario['cargo'];
 
-                $sql_update = "UPDATE equipo SET tipo=?,marca=?,modelo=?,cpu_tic=?,procesador=?,disco=?,ram=?,pantalla=?,pantalla_tic=?,teclado=?,
-                                            teclado_tic=?,mouse=?,mouse_tic=?,cargador=?,cargador_tic=?,bateria=?,procedencia=?,seccional=?,municipio=?,funcionario=?,
+                $sql_update = "UPDATE equipo SET cpu_tic=?,pantalla=?,pantalla_tic=?,teclado=?,
+                                            teclado_tic=?,mouse=?,mouse_tic=?,cargador=?,cargador_tic=?,bateria=?,seccional=?,municipio=?,funcionario=?,
                                             cargo=?,area=?,estado=?,nombre_pc=?,so=?,asignado_por=? WHERE serial=?";
                 $arrData = array(
-                    $datos['tipo'], $datos['cod_marca'], $datos['cod_modelo'], $datos['serialTIC'], $datos['procesador'],
-                    $datos['disco'], $datos['ram'], $datos['pantalla'], $datos['pantallaTIC'], $datos['teclado'], $datos['tecladoTIC'],
+                    $datos['serialTIC'], $datos['pantalla'], $datos['pantallaTIC'], $datos['teclado'], $datos['tecladoTIC'],
                     $datos['mouse'], $datos['mouseTIC'], $datos['cargador'], $datos['cargadorTIC'], $datos['bateria'],
-                    $datos['procedencia'], $datos['seccional'], $datos['municipio'], $datos['cod_funcionario'], $datos['cargo'], $datos['area'],
+                    $datos['seccional'], $datos['municipio'], $datos['cod_funcionario'], $datos['cargo'], $datos['area'],
                     $datos['estado'], $datos['nom_pc'], $datos['so'], $datos['asignado_por'], $datos['serial']
                 );
                 return $this->update($sql_update, $arrData);
