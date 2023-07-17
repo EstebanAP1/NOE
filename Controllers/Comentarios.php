@@ -15,8 +15,6 @@ class Comentarios extends Controllers
             $beforeData = $_POST['beforeData'];
             $actualData = $_POST['actualData'];
 
-            //TODO: REALIZAR ACTUALIZACIÓN PARA INSERTAR OBSERVACIONES
-
             if ($beforeData['pantalla'] != $actualData['pantalla']) {
                 $arrData = array(
                     'serial' => $actualData['serial'],
@@ -174,12 +172,22 @@ class Comentarios extends Controllers
         echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
     }
 
-    public function getComments()
+    public function getCommentsModal()
     {
         if ($_POST) {
             $comments = $_POST;
             $html = getModal('modalComments', $comments);
         }
+    }
+
+    public function getComments($serial)
+    {
+        $arrData = $this->model->selectComments($serial);
+
+        for ($i = 0; $i < count($arrData); $i++) {
+            $arrData[$i]['numeracion'] = '';
+        }
+        echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
     }
 
     public function updateComments()

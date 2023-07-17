@@ -37,5 +37,13 @@ class ComentariosModel extends MySql
             return -1;
         }
     }
+
+    public function selectComments(string $serial)
+    {
+        $sql = "SELECT c.serial_equipo,u.username,c.tipo_dispositivo,c.comentario,c.serial_anterior,c.serial_nuevo,c.fecha FROM comentarios c
+        INNER JOIN usuario u ON c.responsable = u.id_user 
+        WHERE c.serial_equipo = '{$serial}'";
+        return $this->selectAll($sql);
+    }
 }
 ?>

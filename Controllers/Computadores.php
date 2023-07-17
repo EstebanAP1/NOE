@@ -179,7 +179,10 @@ class Computadores extends Controllers
             $arrData[$i]['numeracion'] = '';
             $arrData[$i]['acciones'] = '
             <div class="text-center">
-            <button class="btn btn-info btn-sm btnViewPC">
+                <button class="btn btn-success btn-sm btnActaPC">
+                    <i class="fas fa-file"></i>
+                </button>
+                <button class="btn btn-info btn-sm btnViewPC">
                     <i class="fas fa-eye"></i>
                 </button>
                 <button class="btn btn-warning btn-sm btnEditPC">
@@ -215,7 +218,6 @@ class Computadores extends Controllers
     {
         $html = '';
         $arrData = $this->model->selectSeccionales();
-        print_r($arrData);
         if (count($arrData) > 0) {
             for ($i = 0; $i < count($arrData); $i++) {
                 $html .= '<option value="' . $arrData[$i]['cod_seccional'] . '">' . $arrData[$i]['nom_seccional'] . '</option>';

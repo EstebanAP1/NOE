@@ -117,10 +117,11 @@ class ComputadoresModel extends MySql
 
     public function selectComputador($serial)
     {
-        $sql = "SELECT e.tipo,m.cod_marca,m.cod_modelo,e.procesador,e.disco,e.ram,e.procedencia,e.serial,e.cpu_tic,e.pantalla,e.pantalla_tic,
-                e.teclado,e.teclado_tic,e.mouse,e.mouse_tic,e.cargador,e.cargador_tic,e.nombre_pc,e.so,e.estado,s.cod_seccional,mu.cod_municipio,
-                f.num_doc,a.nom_area,c.nom_cargo,e.asignado_por,e.fecha_ingreso,e.ultima_actualizacion FROM equipo e
+        $sql = "SELECT e.tipo,m2.cod_marca,m2.nom_marca,m.nom_modelo,m.cod_modelo,e.procesador,e.disco,e.ram,e.procedencia,e.serial,e.cpu_tic,e.pantalla,e.pantalla_tic,
+                e.teclado,e.teclado_tic,e.mouse,e.mouse_tic,e.cargador,e.cargador_tic,e.nombre_pc,e.so,e.estado,s.cod_seccional,s.nom_seccional,mu.cod_municipio,
+                mu.nom_municipio,f.num_doc,CONCAT(f.nombre1,' ',f.nombre2,' ',f.apellido1,' ',f.apellido2) AS 'funcionario',a.nom_area,c.nom_cargo,e.asignado_por,e.fecha_ingreso,e.ultima_actualizacion FROM equipo e
                 INNER JOIN modelo m ON m.cod_modelo = e.modelo
+                INNER JOIN marca m2 ON m2.cod_marca = e.marca
                 INNER JOIN seccional s ON s.cod_seccional = e.seccional
                 INNER JOIN municipio mu ON mu.cod_municipio = e.municipio
                 INNER JOIN funcionario f ON f.num_doc = e.funcionario

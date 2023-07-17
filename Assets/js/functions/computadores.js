@@ -273,7 +273,7 @@ $('#formComputador').on('submit', function (e) {
                                     ]);
 
                                     if (sw) {
-                                        var ajaxUrlComments = base_url + '/Comentarios/getComments';
+                                        var ajaxUrlComments = base_url + '/Comentarios/getCommentsModal';
                                         $.ajax({
                                             type: "POST",
                                             url: ajaxUrlComments,
@@ -441,7 +441,7 @@ $('#tableComputador').on('click', 'button.btnEditPC', function () {
                 $('#listMunicipio').selectpicker('refresh');
                 $('#listFuncionario').selectpicker('refresh');
 
-                //TODO: Buscar una solución sin timeout
+                //FIXME: Buscar una solución sin timeout
 
                 setTimeout(() => {
                     $('#listModelo').val(datos.cod_modelo);
@@ -459,4 +459,145 @@ $('#tableComputador').on('click', 'button.btnEditPC', function () {
             }
         }
     });
+});
+
+$('#tableComputador').on('click', 'button.btnViewPC', function () {
+    var datos = tableComputador.row($(this).parents('tr')).data();
+
+    var ajaxUrl = base_url + '/Computadores/getComputador/' + datos.serial;
+
+    $.ajax({
+        type: "GET",
+        url: ajaxUrl,
+        success: function (response) {
+            var objData = JSON.parse(response);
+
+            if (objData.status) {
+                var datos = objData.msg;
+
+                $('#viewTipo').val(datos.tipo);
+                $('#viewMarca').val(datos.nom_marca);
+                $('#viewModelo').val(datos.nom_modelo);
+                $('#viewCPU').val(datos.procesador);
+                $('#viewDisco').val(datos.disco);
+                $('#viewRAM').val(datos.ram);
+                $('#viewProcedencia').val(datos.procedencia);
+                $('#viewSerial').val(datos.serial);
+                $('#viewSerialTIC').val(datos.cpu_tic);
+                $('#viewPantalla').val(datos.pantalla);
+                $('#viewPantallaTIC').val(datos.pantalla_tic);
+                $('#viewTeclado').val(datos.teclado);
+                $('#viewTecladoTIC').val(datos.teclado_tic);
+                $('#viewMouse').val(datos.mouse);
+                $('#viewMouseTIC').val(datos.mouse_tic);
+                $('#viewCargador').val(datos.cargador);
+                $('#viewCargadorTIC').val(datos.cargador_tic);
+                $('#viewNombrePC').val(datos.nombre_pc);
+                $('#viewSO').val(datos.so);
+                $('#viewEstado').val(datos.estado);
+                $('#viewSeccional').val(datos.nom_seccional);
+                $('#viewMunicipio').val(datos.nom_municipio);
+                $('#viewFuncionario').val(datos.funcionario);
+                $('#viewArea').val(datos.nom_area);
+                $('#viewCargo').val(datos.nom_cargo);
+
+                var tableComments = $('#tableComments').DataTable({
+                    aProccesing: true,
+                    aServerSide: true,
+                    language: {
+                        'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                    },
+                    ajax: {
+                        'url': base_url + '/Comentarios/getComments/' + datos.serial,
+                        'dataSrc': ''
+                    },
+                    columns: [
+                        { 'data': 'numeracion' },
+                        { 'data': 'serial_equipo' },
+                        { 'data': 'tipo_dispositivo' },
+                        { 'data': 'serial_anterior' },
+                        { 'data': 'serial_nuevo' },
+                        { 'data': 'username' },
+                        { 'data': 'comentario' },
+                        { 'data': 'fecha' },
+                    ],
+                    responsive: true,
+                    bDestroy: true,
+                    autoWidth: false,
+                    iDisplayLength: 10,
+                    order: [[1, 'asc']]
+                });
+                tableComments.on('order.dt search.dt', function () {
+                    let i = 1;
+
+                    tableComments.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                        this.data(i++);
+                    });
+                }).draw();
+
+                $('.modalViewComputador').modal('show');
+            }
+        }
+    });
+});
+
+$('#tableComputador').on('click', 'button.btnActaPC', function () {
+    var datos = tableComputador.row($(this).parents('tr')).data();
+
+    //TODO: Crear proceso de generar y subir actas
+
+    if (datos.estado.includes('Pendiente')) {
+        Swal.fire({
+            icon: 'question',
+            title: 'Qué deseas hacer?',
+            showDenyButton: true,
+            confirmButtonColor: '#218838',
+            denyButtonColor: '#ffc107',
+            confirmButtonText: 'Generar acta',
+            denyButtonText: 'Subir acta',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('Acta generada')
+            } else if (result.isDenied) {
+                Swal.fire('Acta subida')
+            }
+        });
+    } else if (datos.estado.includes('Entregado')) {
+        Swal.fire({
+            icon: 'question',
+            text: "Deseas subir el acta nuevamente?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Subir acta'
+                )
+            }
+        });
+    } else if (datos.estado.includes("Disponible")) {
+        Swal.fire({
+            icon: 'error',
+            text: 'El equipo está disponible, no necesita acta',
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end',
+            timerProgressBar: true,
+            timer: 1500
+        });
+    } else if (datos.estado.includes('Bogeda')) {
+        Swal.fire({
+            icon: 'error',
+            text: 'El equipo está en bodega, no necesita acta',
+            showConfirmButton: false,
+            toast: true,
+            position: 'top-end',
+            timerProgressBar: true,
+            timer: 1500
+        });
+    }
 });

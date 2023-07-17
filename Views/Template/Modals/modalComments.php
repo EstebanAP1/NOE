@@ -16,6 +16,7 @@
             </div>
             <div class="modal-body">
                 <form id="formComentarios" name="formComentarios">
+                    <p class="text-primary">No es necesario comentar en todos</p>
                     <?php
                     $cambios = $data['cambios'];
 
@@ -34,14 +35,14 @@
                         <?php
                     }
                     ?>
-                    <div class="mt-3">
+                    <div class="text-center mt-3">
                         <button type="submit" id="btnActionForm" class="btn btn-success"><i
                                 class="far fa-check-circle"></i>
-                            <span id="btnText">Guardar</span>
+                            <span id="btnText">Enviar</span>
                         </button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal"><i
                                 class="far fa-xmark-circle"></i>
-                            Cerrar</button>
+                            Sin comentarios</button>
                     </div>
                 </form>
             </div>

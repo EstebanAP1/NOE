@@ -177,56 +177,148 @@
 </div>
 
 
-<div class="modal fade modalViewUsuario" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade modalViewComputador" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header headerView">
-                <h5 id="titleModal" class="modal-title">Datos de usuario</h5>
+                <h5 id="titleModal" class="modal-title">Mostrar computador</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <i class="fas fa-xmark" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="card-body table-responsive p-0" style="height: 100%;">
-                    <table class="table table-hover table-bordered">
-                        <tbody>
-                            <tr>
-                                <td>ID Usuario:</td>
-                                <td id="celUserId"></td>
-                            </tr>
-                            <tr>
-                                <td>Identificación:</td>
-                                <td id="celId"></td>
-                            </tr>
-                            <tr>
-                                <td>Nombre:</td>
-                                <td id="celNombre"></td>
-                            </tr>
-                            <tr>
-                                <td>Teléfono:</td>
-                                <td id="celTelefono"></td>
-                            </tr>
-                            <tr>
-                                <td>Correo:</td>
-                                <td id="celCorreo"></td>
-                            </tr>
-                            <tr>
-                                <td>Rol:</td>
-                                <td id="celRol"></td>
-                            </tr>
-                            <tr>
-                                <td>Estado:</td>
-                                <td id="celEstado"></td>
-                            </tr>
-                            <tr>
-                                <td>Fecha registro:</td>
-                                <td id="celFecha"></td>
-                            </tr>
-                    </table>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="viewTipo">Tipo</label>
+                        <input type="text" class="form-control" id="viewTipo" name="viewTipo" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewMarca">Marca</label>
+                        <input type="text" class="form-control" id="viewMarca" name="viewMarca" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewModelo">Modelo</label>
+                        <input type="text" class="form-control" id="viewModelo" name="viewModelo" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewCPU">Procesador</label>
+                        <input type="text" class="form-control" id="viewCPU" name="viewCPU" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewDisco">Disco</label>
+                        <input type="text" class="form-control" id="viewDisco" name="viewDisco" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewRAM">RAM</label>
+                        <input type="text" class="form-control" id="viewRAM" name="viewRAM" readonly>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewProcedencia">Procedencia</label>
+                        <input type="text" class="form-control" id="viewProcedencia" name="viewProcedencia" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewSerial">Serial</label>
+                        <input type="text" class="form-control" id="viewSerial" name="viewSerial" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewSerialTIC">Serial TIC</label>
+                        <input type="text" class="form-control" id="viewSerialTIC" name="viewSerialTIC"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewPantalla">Pantalla</label>
+                        <input type="text" class="form-control" id="viewPantalla" name="viewPantalla" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewPantallaTIC">Pantalla TIC</label>
+                        <input type="text" class="form-control" id="viewPantallaTIC" name="viewPantallaTIC" readonly>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewTeclado">Teclado</label>
+                        <input type="text" class="form-control" id="viewTeclado" name="viewTeclado" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewTecladoTIC">Teclado TIC</label>
+                        <input type="text" class="form-control" id="viewTecladoTIC" name="viewTecladoTIC"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewMouse">Mouse</label>
+                        <input type="text" class="form-control" id="viewMouse" name="viewMouse" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewMouseTIC">Mouse TIC</label>
+                        <input type="text" class="form-control" id="viewMouseTIC" name="viewMouseTIC" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewCargador">Cargador</label>
+                        <input type="text" class="form-control" id="viewCargador" name="viewCargador" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewCargadorTIC">Cargador TIC</label>
+                        <input type="text" class="form-control" id="viewCargadorTIC" name="viewCargadorTIC"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewNombrePC">Nombre del equipo</label>
+                        <input type="text" class="form-control" id="viewNombrePC" name="viewNombrePC" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewSO">Sistema operativo</label>
+                        <input type="text" class="form-control" id="viewSO" name="viewSO" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewEstado">Estado</label>
+                        <input type="text" class="form-control" id="viewEstado" name="viewEstado" readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewSeccional">Seccional</label>
+                        <input type="text" class="form-control" id="viewSeccional" name="viewSeccional"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="viewMunicipio">Municipio</label>
+                        <input type="text" class="form-control" id="viewMunicipio" name="viewMunicipio"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewFuncionario">Funcionario</label>
+                        <input type="text" class="form-control" id="viewFuncionario" name="viewFuncionario"
+                            readonly></input>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewArea">Area</label>
+                        <input type="text" class="form-control" id="viewArea" name="viewArea" readonly></input>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="viewCargo">Cargo</label>
+                        <input type="text" class="form-control" id="viewCargo" name="viewCargo" readonly></input>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                <div class="text-center mt-2 mb-3">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
+                            class="far fa-xmark-circle"></i>
+                        Cerrar</button>
+                </div>
+                <table id="tableComments" class="table table-bordered table-hover">
+                    <thead class="bg-info">
+                        <tr>
+                            <th class="text-center" colspan="8">HISTORIAL DE CAMBIOS</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>Serial</th>
+                            <th>Tipo cambio</th>
+                            <th>Anterior</th>
+                            <th>Nuevo</th>
+                            <th>Responsable</th>
+                            <th>Observación</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
