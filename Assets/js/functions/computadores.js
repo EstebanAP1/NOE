@@ -245,16 +245,16 @@ $('#formComputador').on('submit', function (e) {
                 var objData = JSON.parse(response);
                 if (objData.status) {
 
+                    $('.modalFormComputadores').modal('hide');
+                    $('#formComputador').trigger('reset');
+
+                    tableComputador.ajax.reload();
+
                     if (formData['0'].value == 'editar') {
                         var commentData = {
                             beforeData: objData.beforeData,
                             actualData: objData.actualData
                         }
-
-                        $('.modalFormComputadores').modal('hide');
-                        $('#formComputador').trigger('reset');
-
-                        tableComputador.ajax.reload();
 
                         var ajaxUrlComments = base_url + '/Comentarios/setComments';
                         $.ajax({
@@ -266,7 +266,6 @@ $('#formComputador').on('submit', function (e) {
 
                                 if (objData.status) {
                                     var sw = false;
-                                    var cambios = new Array();
 
                                     Object.entries(objData.cambios).forEach(([name, value]) => [
                                         value > 0 ? sw = true : ''
@@ -316,8 +315,6 @@ $('#formComputador').on('submit', function (e) {
                                             }
                                         });
                                     } else {
-                                        $('.modalFormComputadores').modal('hide');
-                                        $('#formComputador').trigger('reset');
                                         Swal.fire({
                                             icon: 'success',
                                             title: 'Computadores',
@@ -551,32 +548,176 @@ $('#tableComputador').on('click', 'button.btnActaPC', function () {
             icon: 'question',
             title: 'Qué deseas hacer?',
             showDenyButton: true,
-            confirmButtonColor: '#218838',
-            denyButtonColor: '#ffc107',
+            confirmButtonColor: 'black',
+            denyButtonColor: 'black',
             confirmButtonText: 'Generar acta',
             denyButtonText: 'Subir acta',
-            cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire('Acta generada')
+                let ajaxUrl = base_url + '/Computadores/generateActa';
+
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxUrl,
+                    data: datos,
+                    success: function (response) {
+                        let objData = JSON.parse(response);
+
+                        if (objData.status) {
+                            window.open(base_url + '/GenerarActa');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Hubo un error al generar el acta.'
+                            });
+                        }
+                    }
+                });
             } else if (result.isDenied) {
-                Swal.fire('Acta subida')
+                let ajaxUrl = base_url + '/Computadores/getActaModal';
+
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxUrl,
+                    data: datos,
+                    success: function (response) {
+                        document.querySelector("#contentAjax").innerHTML = response;
+                        $('.modalCargueActas').modal('show');
+                        bsCustomFileInput.init();
+
+                        $('#formCargueActa').on('submit', function (e) {
+                            e.preventDefault();
+
+                            if ($('#fileActa').val() != '') {
+                                let formData = new FormData(document.getElementById('formCargueActa'));
+                                let ajaxUrl = base_url + '/Computadores/uploadActa/' + $('#serialActa').val();
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: ajaxUrl,
+                                    data: formData,
+                                    dataType: "html",
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (response) {
+                                        let objData = JSON.parse(response);
+
+                                        if (objData.status) {
+                                            $('.modalCargueActas').modal('hide');
+                                            Swal.fire({
+                                                icon: 'success',
+                                                text: objData.msg
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                text: objData.msg
+                                            });
+                                        }
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: 'Selecciona un archivo'
+                                });
+                            }
+                        });
+                    }
+                });
             }
         });
     } else if (datos.estado.includes('Entregado')) {
         Swal.fire({
             icon: 'question',
-            text: "Deseas subir el acta nuevamente?",
+            title: 'Qué deseas hacer?',
+            showDenyButton: true,
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Sí',
-            cancelButtonText: 'No'
+            confirmButtonColor: 'black',
+            denyButtonColor: 'black',
+            cancelButtonColor: 'black',
+            confirmButtonText: 'Generar acta',
+            denyButtonText: 'Subir acta',
+            cancelButtonText: 'Visualizar acta'
         }).then((result) => {
+            console.log(result);
             if (result.isConfirmed) {
-                Swal.fire(
-                    'Subir acta'
-                )
+                let ajaxUrl = base_url + '/Computadores/generateActa';
+
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxUrl,
+                    data: datos,
+                    success: function (response) {
+                        let objData = JSON.parse(response);
+
+                        if (objData.status) {
+                            window.open(base_url + '/GenerarActa');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Hubo un error al generar el acta.'
+                            });
+                        }
+                    }
+                });
+            } else if (result.isDenied) {
+                let ajaxUrl = base_url + '/Computadores/getActaModal';
+
+                $.ajax({
+                    type: 'POST',
+                    url: ajaxUrl,
+                    data: datos,
+                    success: function (response) {
+                        document.querySelector("#contentAjax").innerHTML = response;
+                        $('.modalCargueActas').modal('show');
+                        bsCustomFileInput.init();
+
+                        $('#formCargueActa').on('submit', function (e) {
+                            e.preventDefault();
+
+                            if ($('#fileActa').val() != '') {
+                                let formData = new FormData(document.getElementById('formCargueActa'));
+
+                                let ajaxUrl = base_url + '/Computadores/uploadActa';
+
+                                $.ajax({
+                                    type: "POST",
+                                    url: ajaxUrl,
+                                    data: formData,
+                                    dataType: "html",
+                                    cache: false,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (response) {
+                                        let objData = JSON.parse(response);
+
+                                        if (objData.status) {
+                                            $('.modalCargueActas').modal('hide');
+                                            Swal.fire({
+                                                icon: 'success',
+                                                text: objData.msg
+                                            });
+                                        } else {
+                                            Swal.fire({
+                                                icon: 'error',
+                                                text: objData.msg
+                                            });
+                                        }
+                                    }
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: 'Selecciona un archivo'
+                                });
+                            }
+                        });
+                    }
+                });
+            } else if (result.isDismissed && result.dismiss == 'cancel') {
+                Swal.fire('Viendo acta')
             }
         });
     } else if (datos.estado.includes("Disponible")) {

@@ -13,10 +13,6 @@ getModal('modalComputadores', $data);
                     <h1>
                         <i class="fas fa-house"></i>
                         <?= $data['page_title'] ?>
-                        <button type="button" class="btn btn-primary btnCreatePC" data-toggle="tooltip"
-                            data-placement="top" title="Agregar equipo">
-                            <i class="fas fa-circle-plus"></i> Nuevo
-                        </button>
                     </h1>
                 </div>
             </div>
@@ -25,17 +21,16 @@ getModal('modalComputadores', $data);
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <table id="tableComputador" class="table table-bordered table-hover">
+                <table id="tableMantenimiento" class="table table-bordered table-hover">
                     <thead>
                         <tr>
                             <th></th>
                             <th>Seccional</th>
                             <th>Tipo</th>
                             <th>Serial</th>
-                            <th>Nombre PC</th>
+                            <th>Area</th>
                             <th>Funcionario</th>
-                            <th>Responsable</th>
-                            <th>Estado</th>
+                            <th>Fecha mantenimiento</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
@@ -47,10 +42,9 @@ getModal('modalComputadores', $data);
                             <th>Seccional</th>
                             <th>Tipo</th>
                             <th>Serial</th>
-                            <th>Nombre PC</th>
+                            <th>Area</th>
                             <th>Funcionario</th>
-                            <th>Responsable</th>
-                            <th>Estado</th>
+                            <th>Fecha mantenimiento</th>
                             <th>Acciones</th>
                         </tr>
                     </tfoot>

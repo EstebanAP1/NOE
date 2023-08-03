@@ -136,7 +136,7 @@ select.selectpicker {
 .bootstrap-select.form-control {
     margin-bottom: 0;
     padding: 0;
-    border: none;
+    border: 1px solid #ced4da;
     height: auto;
 }
 :not(.input-group) > .bootstrap-select.form-control:not([class*="col-"]) {

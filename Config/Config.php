@@ -13,11 +13,10 @@ const DB_PASSWORD = '';
 const DB_CHARSET = 'charset=utf8';
 
 // Datos de conexión FTP
-const FTP_SERVER = 'localhost';
-const FTP_PORT = '21';
-const FTP_USER = 'root';
-const FTP_PASSWORD = '';
-const FTP_MODE = true;
+const FTP_SERVER = '127.0.0.1';
+const FTP_USER = 'admin';
+const FTP_PASSWORD = '1234';
+const FTP_DIR = '/uploads/actas';
 
 //Deliminadores decimal y millar Ej.  24,1989.00
 const SPD = ',';

@@ -18,7 +18,6 @@ class Computadores extends Controllers
             'page_title' => 'Gestión de computadores',
             'page_name' => 'Computadores',
             'nav_father' => 'Equipos',
-            'page_content' => 'Párrafoooooooooo',
             'page_function' => 'computadores.js'
         );
         $this->views->getView($this, 'computadores', $data);
@@ -209,6 +208,61 @@ class Computadores extends Controllers
         } else {
             $arrResponse = array('status' => false, 'msg' => 'Error en envío de datos.');
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getActaModal()
+    {
+        if ($_POST) {
+            $datos = $_POST;
+            getModal('modalActas', $datos);
+        }
+    }
+
+    public function generateActa()
+    {
+        if ($_POST) {
+            $datosPC = $this->model->selectComputador($_POST['serial']);
+            $datosFuncionario = $this->model->selectFuncionario($datosPC['num_doc']);
+            $datosResponsable = $this->model->selectFuncionario($datosPC['asignado_por']);
+
+            $_SESSION['datosActa'] = array('pc' => $datosPC, 'funcionario' => $datosFuncionario, 'responsable' => $datosResponsable);
+
+            $arrResponse = array('status' => true, 'datos' => $_SESSION['datosActa']);
+        } else {
+            $arrResponse = array('status' => false);
+        }
+
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function uploadActa($serial)
+    {
+        $file = $_FILES['fileActa']['name'];
+
+        if ($file != '') {
+            $connection = ftp_connect(FTP_SERVER);
+            $login = ftp_login($connection, FTP_USER, FTP_PASSWORD);
+
+            if ($connection != '' && $login != '') {
+                $datosEquipo = $this->model->selectComputador($serial);
+                $datosFuncionario = $this->model->selectFuncionario($datosEquipo['num_doc']);
+                dep($datosEquipo);
+                $source_file = $_FILES['fileActa']['tmp_name'];
+                $ruta = $datosEquipo[''];
+                if (ftp_put($connection, $ruta, $source_file, FTP_BINARY)) {
+                    $arrResponse = array('status' => true, 'msg' => 'Acta subida correctamente');
+                } else {
+                    $arrResponse = array('status' => false, 'msg' => 'Error al subir el acta');
+                }
+            } else {
+                $arrResponse = array('status' => false, 'msg' => 'Error al conectar con el servidor');
+            }
+            ftp_close($connection);
+        } else {
+            $arrResponse = array('status' => false, 'msg' => 'Archivo vacío');
+        }
+
         echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
     }
 

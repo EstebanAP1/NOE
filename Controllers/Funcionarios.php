@@ -17,7 +17,7 @@ class Funcionarios extends Controllers
             'page_tag' => 'NOE',
             'page_title' => 'Gestión de funcionarios',
             'page_name' => 'Funcionarios',
-            'nav_father' => '',
+            'nav_father' => ''
         );
         $this->views->getView($this, 'funcionarios', $data);
     }

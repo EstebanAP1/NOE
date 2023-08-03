@@ -1,5 +1,5 @@
 <div class="modal fade modalAddPermisos" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div id="divLoading">
                 <div>

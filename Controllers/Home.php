@@ -17,8 +17,7 @@ class Home extends Controllers
             'page_tag' => 'NOE',
             'page_title' => 'Página principal',
             'page_name' => 'Home',
-            'nav_father' => '',
-            'page_content' => 'Párrafoooooooooo'
+            'nav_father' => ''
         );
         $this->views->getView($this, 'home', $data);
     }

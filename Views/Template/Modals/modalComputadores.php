@@ -1,5 +1,5 @@
 <div class="modal fade modalFormComputadores" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div id="divLoading">
                 <div>
@@ -178,7 +178,7 @@
 
 
 <div class="modal fade modalViewComputador" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <div class="modal-header headerView">
                 <h5 id="titleModal" class="modal-title">Mostrar computador</h5>

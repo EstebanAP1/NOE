@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Esteban Padilla">
     <meta name="theme-color" content="#343a40">
-    <link rel="shortcut icon" href="<?= media() ?>/images/logo_icon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= media() ?>/images/cajacopi_icon.ico" type="image/x-icon">
     <title>
         <?= $data['page_tag'] ?>
     </title>
@@ -39,6 +39,12 @@
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
+                    <a href="<?= base_url() ?>" class="brand-link">
+                        <img src="<?= media() ?>/images/logo_cajacopieps.png" alt="NOE Logo" class="brand-image"
+                            style="opacity: .8">
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button" id="openSidebar"><i
                             class="fas fa-bars"></i></a>
                 </li>
@@ -48,8 +54,8 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown user-menu">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= media() ?>/images/user-image.png" class="user-image img-circle elevation-2"
-                            alt="User Image">
+                        <!-- <img src="<?= media() ?>/images/user-image.png" class="user-image img-circle elevation-2"
+                            alt="User Image"> -->
 
                         <span class="d-none d-md-inline">
                             <?= $_SESSION['userData']['nombres'] ?>

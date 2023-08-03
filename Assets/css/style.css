@@ -37,7 +37,8 @@
     color: #fff;
 }
 
-.headerPermisos {
+.headerPermisos,
+.headerActas {
     background-color: #23272b;
     border-color: #1d2124;
     color: #fff;

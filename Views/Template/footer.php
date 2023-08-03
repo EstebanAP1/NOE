@@ -1,8 +1,8 @@
 <footer class="main-footer">
     <div class="float-right d-none d-sm-block">
-        <b>Version</b> 0.1
+        <!-- <b>Version</b> Incompleta -->
     </div>
-    <strong>Copyright &copy; 2023 <a href="#">CajacopiEPS</a>.</strong>
+    <!-- <strong>Copyright &copy; 2023 <a href="#">CajacopiEPS</a>.</strong> -->
 </footer>
 
 </div>
@@ -29,18 +29,16 @@
 <!-- Template scripts -->
 <script src="<?= media() ?>/js/main.min.js"></script>
 <?php
-if ($data['page_name'] == 'Usuarios') { ?>
-    <!-- DataTable Buttons -->
-    <script src="<?= media() ?>/plugins/datatable/buttons/js/dataTables.buttons.min.js"></script>
-    <script src="<?= media() ?>/plugins/datatable/buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="<?= media() ?>/plugins/datatable/jszip/jszip.min.js"></script>
-    <script src="<?= media() ?>/plugins/datatable/pdfmake/pdfmake.min.js"></script>
-    <script src="<?= media() ?>/plugins/datatable/pdfmake/vfs_fonts.js"></script>
-    <script src="<?= media() ?>/plugins/datatable/buttons/js/buttons.html5.min.js"></script>
-<?php } ?>
+if ($data['page_name'] == 'Computadores') {
+    ?>
+    <script src="<?= media() ?>/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <?php
+}
+?>
+
 <!-- Own scripts -->
 <script src="<?= media() ?>/js/functions/general.js"></script>
-<?php if ($data['page_name'] == 'Computadores' || $data['page_name'] == 'Roles' || $data['page_name'] == 'Usuarios') { ?>
+<?php if ($data['page_name'] == 'Computadores' || $data['page_name'] == 'Roles' || $data['page_name'] == 'Usuarios' || $data['page_name'] == 'Mantenimientos') { ?>
     <script src="<?= media() ?>/js/functions/<?= $data['page_function'] ?>"></script>
 <?php } ?>
 </body>

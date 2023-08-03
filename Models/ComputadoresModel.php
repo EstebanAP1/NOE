@@ -153,7 +153,7 @@ class ComputadoresModel extends MySql
 
     public function selectFuncionario(string $id)
     {
-        $sql = "SELECT a.nom_area, c.nom_cargo FROM funcionario f
+        $sql = "SELECT f.tipo_doc,f.num_doc,CONCAT(f.nombre1,' ',f.nombre2,' ',f.apellido1,' ',f.apellido2) as 'nom_funcionario', a.nom_area, c.nom_cargo FROM funcionario f
         INNER JOIN area a ON a.cod_area = f.area
         INNER JOIN cargo c ON c.cod_cargo = f.cargo
         WHERE f.num_doc = $id";

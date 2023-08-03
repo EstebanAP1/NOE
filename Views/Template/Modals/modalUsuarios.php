@@ -1,5 +1,5 @@
 <div class="modal fade modalFormUsuario" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div id="divLoading">
                 <div>
@@ -63,7 +63,7 @@
 </div>
 
 <div class="modal fade modalViewUsuario" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header headerView">
                 <h5 id="titleModal" class="modal-title">Datos de usuario</h5>
