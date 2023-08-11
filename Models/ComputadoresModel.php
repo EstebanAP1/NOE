@@ -59,7 +59,7 @@ class ComputadoresModel extends MySql
                     $datos['disco'], $datos['ram'], $datos['pantalla'], $datos['pantallaTIC'], $datos['teclado'], $datos['tecladoTIC'],
                     $datos['mouse'], $datos['mouseTIC'], $datos['cargador'], $datos['cargadorTIC'], $datos['bateria'],
                     $datos['procedencia'], $datos['seccional'], $datos['municipio'], $datos['cod_funcionario'], $datos['cargo'], $datos['area'],
-                    $datos['estado'], $datos['nom_pc'], $datos['so'], $datos['asignado_por'],
+                    $datos['estado'], $datos['nom_pc'], $datos['so'], $_SESSION['userData']['id_user'],
                     'O'
                 );
                 return $this->insert($sql_insert, $arrData);
@@ -91,7 +91,7 @@ class ComputadoresModel extends MySql
                     $datos['serialTIC'], $datos['pantalla'], $datos['pantallaTIC'], $datos['teclado'], $datos['tecladoTIC'],
                     $datos['mouse'], $datos['mouseTIC'], $datos['cargador'], $datos['cargadorTIC'], $datos['bateria'],
                     $datos['seccional'], $datos['municipio'], $datos['cod_funcionario'], $datos['cargo'], $datos['area'],
-                    $datos['estado'], $datos['nom_pc'], $datos['so'], $datos['asignado_por'], $datos['serial']
+                    $datos['estado'], $datos['nom_pc'], $datos['so'], $_SESSION['userData']['id_user'], $datos['serial']
                 );
                 return $this->update($sql_update, $arrData);
             } else {
@@ -131,7 +131,57 @@ class ComputadoresModel extends MySql
         return $this->select($sql);
     }
 
-    // TODO: COLOCAR EN OTRO MODEL EN EL FUTURO 
+    public function uploadActa($archivo, $ruta)
+    {
+        $connection = ftp_connect(FTP_SERVER);
+        $login = ftp_login($connection, FTP_USER, FTP_PASSWORD);
+
+        if ($connection != '' && $login != '') {
+
+            if (ftp_put($connection, $ruta, $archivo, FTP_BINARY)) {
+                $response = 1;
+            } else {
+                $response = 2;
+            }
+        } else {
+            $response = 3;
+        }
+        ftp_close($connection);
+
+        return $response;
+    }
+
+    public function insertActa($equipo, $funcionario, $ruta)
+    {
+        $sql_update = "UPDATE equipo SET fecha_cargue_acta = NOW(), estado = ? WHERE serial = ?";
+        $arrDataUpdate = array('Entregado', $equipo['serial']);
+        $this->update($sql_update, $arrDataUpdate);
+
+        $sql_insert = "INSERT INTO actas_cargadas(tipo_doc,num_doc,responsable,ruta,serial_equipo,tipo_acta,fecha_cargue) VALUES
+                (?,?,?,?,?,?,NOW())";
+        $arrData = array($funcionario['tipo_doc'], $funcionario['num_doc'], $equipo['asignado_por'], $ruta, $equipo['serial'], 'E');
+        $insert = $this->insert($sql_insert, $arrData);
+
+        return $insert;
+    }
+
+    public function selectActas(string $serial)
+    {
+        $sql = "SELECT id, CONCAT(f1.nombre1,' ',f1.nombre2,' ',f1.apellido1,' ',f1.apellido2) AS 'funcionario',
+                CONCAT(f2.nombre1,' ',f2.nombre2,' ',f2.apellido1,' ',f2.apellido2) AS 'responsable', a.serial_equipo, a.fecha_cargue FROM actas_cargadas a
+                INNER JOIN funcionario f1 ON f1.num_doc = a.num_doc
+                INNER JOIN funcionario f2 ON f2.num_doc = a.responsable
+                WHERE a.serial_equipo = '{$serial}' AND tipo_acta = 'E'";
+        return $this->selectAll($sql);
+    }
+
+    public function selectActaRoute(int $id)
+    {
+        $sql = "SELECT ruta FROM actas_cargadas WHERE id = '{$id}'";
+        return $this->select($sql);
+    }
+
+    //Funcionarios
 
     public function selectSeccionales()
     {

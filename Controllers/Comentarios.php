@@ -22,7 +22,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Pantalla',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['pantalla'],
-                    'serial_nuevo' => $actualData['pantalla']
+                    'serial_nuevo' => $actualData['pantalla'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -38,7 +39,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Teclado',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['teclado'],
-                    'serial_nuevo' => $actualData['teclado']
+                    'serial_nuevo' => $actualData['teclado'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -54,7 +56,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Mouse',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['mouse'],
-                    'serial_nuevo' => $actualData['mouse']
+                    'serial_nuevo' => $actualData['mouse'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -70,7 +73,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Cargador',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['cargador'],
-                    'serial_nuevo' => $actualData['cargador']
+                    'serial_nuevo' => $actualData['cargador'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -86,7 +90,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Nombre PC',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['nombre_pc'],
-                    'serial_nuevo' => $actualData['nombre_pc']
+                    'serial_nuevo' => $actualData['nombre_pc'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -102,7 +107,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Sistema Operativo',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['so'],
-                    'serial_nuevo' => $actualData['so']
+                    'serial_nuevo' => $actualData['so'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -118,7 +124,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Funcionario',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['num_doc'],
-                    'serial_nuevo' => $actualData['num_doc']
+                    'serial_nuevo' => $actualData['num_doc'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -134,7 +141,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Seccional',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['cod_seccional'],
-                    'serial_nuevo' => $actualData['cod_seccional']
+                    'serial_nuevo' => $actualData['cod_seccional'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -150,7 +158,8 @@ class Comentarios extends Controllers
                     'tipo_dispositivo' => 'Municipio',
                     'comentario' => 'Sin observacion',
                     'serial_anterior' => $beforeData['cod_municipio'],
-                    'serial_nuevo' => $actualData['cod_municipio']
+                    'serial_nuevo' => $actualData['cod_municipio'],
+                    'estado' => $actualData['estado']
                 );
                 $request = $this->model->insertComment($arrData);
                 if ($request > 0) {
@@ -185,6 +194,10 @@ class Comentarios extends Controllers
         $arrData = $this->model->selectComments($serial);
 
         for ($i = 0; $i < count($arrData); $i++) {
+            if ($arrData[$i]['tipo_dispositivo'] == 'Funcionario') {
+                $arrData[$i]['serial_anterior'] = $this->model->selectFuncionario($arrData[$i]['serial_anterior'])['nom_funcionario'];
+                $arrData[$i]['serial_nuevo'] = $this->model->selectFuncionario($arrData[$i]['serial_nuevo'])['nom_funcionario'];
+            }
             $arrData[$i]['numeracion'] = '';
         }
         echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -197,14 +210,14 @@ class Comentarios extends Controllers
             $request_array = array();
             foreach ($comments as $key => $value) {
                 if ($value != '') {
-                    $request = $this->model->updateComment($key, $value);
+                    $request = $this->model->updateComment($key, strClean($value));
                     array_push($request_array, $request);
                 }
             }
-            if (in_array(-1, $request_array)) {
-                $arrResponse = array('status' => true, 'msg' => 'Error al insertar uno o más comentarios.');
+            if (in_array(0, $request_array)) {
+                $arrResponse = array('status' => true, 'warning' => true, 'msg' => 'Error al insertar uno o más comentarios.');
             } else {
-                $arrResponse = array('status' => true, 'msg' => 'Comentarios insertados correctamente.');
+                $arrResponse = array('status' => true, 'warning' => false, 'msg' => 'Comentarios insertados correctamente.');
             }
         } else {
             $arrResponse = array('status' => false, 'msg' => 'Error en envío de datos.');

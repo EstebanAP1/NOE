@@ -5,6 +5,7 @@ getModal('modalComputadores', $data);
 ?>
 
 <div id="contentAjax"></div>
+<div id="contentAjaxViewActa"></div>
 <div class="content-wrapper">
     <section class="content-header">
         <div class="container-fluid">
@@ -25,8 +26,8 @@ getModal('modalComputadores', $data);
     <section class="content">
         <div class="card">
             <div class="card-body">
-                <table id="tableComputador" class="table table-bordered table-hover">
-                    <thead>
+                <table id="tableComputador" class="table table-hover">
+                    <thead style="background-color: #343a40; color: #fff;">
                         <tr>
                             <th></th>
                             <th>Seccional</th>
@@ -41,19 +42,6 @@ getModal('modalComputadores', $data);
                     </thead>
                     <tbody>
                     </tbody>
-                    <tfoot>
-                        <tr>
-                            <th></th>
-                            <th>Seccional</th>
-                            <th>Tipo</th>
-                            <th>Serial</th>
-                            <th>Nombre PC</th>
-                            <th>Funcionario</th>
-                            <th>Responsable</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
         </div>

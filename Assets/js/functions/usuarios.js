@@ -29,6 +29,9 @@ $(function () {
             'url': base_url + '/Usuarios/getUsuarios',
             'dataSrc': ''
         },
+        columnDefs: [
+            { 'className': 'dt-center', 'targets': '_all' }
+        ],
         columns: [
             { 'data': 'numeracion' },
             { 'data': 'username' },

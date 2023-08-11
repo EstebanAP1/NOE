@@ -6,10 +6,10 @@
                     <img src="<?= media() ?>/images/loading.svg" alt="Loading..." />
                 </div>
             </div>
-            <div class="modal-header headerPermisos">
+            <div class="modal-header">
                 <h5 class="modal-title">Permisos de roles de usuario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                    <i class="fas fa-xmark" style="color: #fff;" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body text-center">

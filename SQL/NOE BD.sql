@@ -840,5 +840,16 @@ INSERT INTO `comentarios` (`id_comentario`, `serial_equipo`, `responsable`, `tip
 	(4, 'MJ004J3G', 'LUIS.VERGARA', 'MOUSE', 'se realiza actualizacion de suministro por obsolec', 'M20383001', 'D0W2F', '2021-06-19 11:52:41');
 
 
+CREATE TABLE IF NOT EXISTS `actas_cargadas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `tipo_doc` varchar(5) NOT NULL DEFAULT '',
+  `num_doc` int(11) NOT NULL,
+  `responsable` int(11) NOT NULL,
+  `ruta` varchar(100) NOT NULL DEFAULT '',
+  `serial_equipo` varchar(50) DEFAULT NULL,
+  `tipo_acta` varchar(2) DEFAULT NULL,
+  `fecha_cargue` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+);
 
 

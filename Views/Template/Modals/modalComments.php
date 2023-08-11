@@ -6,17 +6,17 @@
                     <img src="<?= media() ?>/images/loading.svg" alt="Loading..." />
                 </div>
             </div>
-            <div class="modal-header headerComments">
+            <div class="modal-header">
                 <h5 class="modal-title">Comentarios de actualización para
                     <?= $data['serial'] ?>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                    <i class="fas fa-xmark" style="color: #fff;" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="formComentarios" name="formComentarios">
-                    <p class="text-primary">No es necesario comentar en todos</p>
+                    <p class="text-primary">No es necesario comentar todo</p>
                     <?php
                     $cambios = $data['cambios'];
 

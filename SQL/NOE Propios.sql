@@ -126,17 +126,54 @@ CREATE TABLE permisos(
 	u INT(1) DEFAULT(0),
 	d INT(1) DEFAULT(0),
 	PRIMARY KEY(idpermiso)
-);
+); 
 
 SELECT * FROM equipo;
 
+SELECT s.nom_seccional, e.tipo, COUNT(e.serial) AS numero_equipos
+FROM equipo e
+INNER JOIN seccional s ON s.cod_seccional = e.seccional
+GROUP BY e.seccional, e.tipo;
+
+SELECT * FROM marca
+
 SELECT * FROM usuario
+
+SELECT COUNT(id) FROM actas_cargadas;
 
 SELECT * FROM funcionario
 
-SELECT * FROM comentarios
+SELECT * FROM comentarios 
 
 SELECT * FROM usuario
+
+SELECT s.nom_seccional,e.tipo,e.serial,a.nom_area,
+CONCAT(f.nombre1,' ',f.nombre2,' ',f.apellido1,' ',f.apellido2) AS 'funcionario', DATE_FORMAT(fecha_mantenimiento,'%Y-%m-%d') AS 'fecha'
+FROM equipo e
+INNER JOIN seccional s ON s.cod_seccional = e.seccional
+INNER JOIN funcionario f ON f.num_doc = e.funcionario
+INNER JOIN area a ON a.cod_area = f.area
+WHERE !(DATE_FORMAT(SYSDATE(),'%Y-%m-%d')-DATE_FORMAT(fecha_mantenimiento,'%Y-%m-%d') > 0);
+
+SELECT * FROM equipo WHERE fecha_mantenimiento IS NULL
+
+SELECT s.nom_seccional,e.tipo,e.serial,a.nom_area,
+CONCAT(f.nombre1,' ',f.nombre2,' ',f.apellido1,' ',f.apellido2) AS 'funcionario',
+CASE 
+	WHEN e.fecha_mantenimiento IS NULL THEN 'No realizado'
+	ELSE DATE_FORMAT(e.fecha_mantenimiento,'%Y-%m-%d')
+END AS fecha
+FROM equipo e
+INNER JOIN seccional s ON s.cod_seccional = e.seccional
+INNER JOIN funcionario f ON f.num_doc = e.funcionario
+INNER JOIN area a ON a.cod_area = f.area
+WHERE DATE_FORMAT(SYSDATE(),'%Y-%m-%d')-DATE_FORMAT(fecha_mantenimiento,'%Y-%m-%d') > 0 OR fecha_mantenimiento IS NULL;
+
+SELECT id, CONCAT(f1.nombre1,' ',f1.nombre2,' ',f1.apellido1,' ',f1.apellido2) AS 'funcionario',
+                CONCAT(f2.nombre1,' ',f2.nombre2,' ',f2.apellido1,' ',f2.apellido2) AS 'responsable', a.serial_equipo, a.fecha_cargue FROM actas_cargadas a
+                INNER JOIN funcionario f1 ON f1.num_doc = a.num_doc
+                INNER JOIN funcionario f2 ON f2.num_doc = a.responsable
+                WHERE a.serial_equipo = 'PC1' AND tipo_acta = 'M'
 
 SELECT id_user FROM usuario WHERE username = 'auxiliar.prueba' OR id_user = 2
 

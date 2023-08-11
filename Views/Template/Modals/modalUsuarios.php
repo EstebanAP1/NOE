@@ -6,10 +6,10 @@
                     <img src="<?= media() ?>/images/loading.svg" alt="Loading..." />
                 </div>
             </div>
-            <div class="modal-header headerRegister">
+            <div class="modal-header">
                 <h5 id="titleModal" class="modal-title">Crear usuario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                    <i class="fas fa-xmark" style="color: #fff;" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body">
@@ -65,10 +65,10 @@
 <div class="modal fade modalViewUsuario" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header headerView">
+            <div class="modal-header">
                 <h5 id="titleModal" class="modal-title">Datos de usuario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-xmark" aria-hidden="true"></i>
+                    <i class="fas fa-xmark" style="color: #fff;" aria-hidden="true"></i>
                 </button>
             </div>
             <div class="modal-body">

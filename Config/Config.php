@@ -1,6 +1,6 @@
 <?php
 
-const BASE_URL = 'http://localhost/NOE';
+const BASE_URL = 'http://192.168.56.36/NOE';
 
 //Zona horaria
 date_default_timezone_set('America/Bogota');
@@ -16,7 +16,8 @@ const DB_CHARSET = 'charset=utf8';
 const FTP_SERVER = '127.0.0.1';
 const FTP_USER = 'admin';
 const FTP_PASSWORD = '1234';
-const FTP_DIR = '/uploads/actas';
+const FTP_DIR = '/upload/actas';
+const FTP_ACTA_DIR = '/actas';
 
 //Deliminadores decimal y millar Ej.  24,1989.00
 const SPD = ',';

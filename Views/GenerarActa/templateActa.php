@@ -2,9 +2,13 @@
 <html lang="en" style="margin-left: 54px;margin-top: 15px;">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="description" content="NOE CajacopiEPS">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Esteban Padilla">
+    <meta name="theme-color" content="#343a40">
+    <link rel="shortcut icon" href="<?= media() ?>/images/cajacopi_icon.ico" type="image/x-icon">
     <title>Acta de Entrega</title>
     <link rel="stylesheet" href="<?= media() ?>/css/actaStyle.css">
     <style>

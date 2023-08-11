@@ -68,6 +68,9 @@ $(function () {
             'url': base_url + '/Computadores/getComputadores',
             'dataSrc': ''
         },
+        columnDefs: [
+            { 'className': 'dt-center', 'targets': '_all' }
+        ],
         columns: [
             { 'data': 'numeracion' },
             { 'data': 'nom_seccional' },
@@ -271,6 +274,8 @@ $('#formComputador').on('submit', function (e) {
                                         value > 0 ? sw = true : ''
                                     ]);
 
+                                    tableComputador.ajax.reload();
+
                                     if (sw) {
                                         var ajaxUrlComments = base_url + '/Comentarios/getCommentsModal';
                                         $.ajax({
@@ -299,10 +304,17 @@ $('#formComputador').on('submit', function (e) {
 
                                                             if (objData.status) {
                                                                 $('.modalAddComments').modal('hide');
-                                                                Swal.fire({
-                                                                    icon: 'success',
-                                                                    text: objData.msg
-                                                                });
+                                                                if (objData.warning) {
+                                                                    Swal.fire({
+                                                                        icon: 'warning',
+                                                                        text: objData.msg
+                                                                    });
+                                                                } else {
+                                                                    Swal.fire({
+                                                                        icon: 'success',
+                                                                        text: objData.msg
+                                                                    });
+                                                                }
                                                             } else {
                                                                 Swal.fire({
                                                                     icon: 'error',
@@ -498,7 +510,7 @@ $('#tableComputador').on('click', 'button.btnViewPC', function () {
                 $('#viewArea').val(datos.nom_area);
                 $('#viewCargo').val(datos.nom_cargo);
 
-                var tableComments = $('#tableComments').DataTable({
+                let tableComments = $('#tableComments').DataTable({
                     aProccesing: true,
                     aServerSide: true,
                     language: {
@@ -508,6 +520,9 @@ $('#tableComputador').on('click', 'button.btnViewPC', function () {
                         'url': base_url + '/Comentarios/getComments/' + datos.serial,
                         'dataSrc': ''
                     },
+                    columnDefs: [
+                        { 'className': 'dt-center', 'targets': '_all' }
+                    ],
                     columns: [
                         { 'data': 'numeracion' },
                         { 'data': 'serial_equipo' },
@@ -539,206 +554,235 @@ $('#tableComputador').on('click', 'button.btnViewPC', function () {
 });
 
 $('#tableComputador').on('click', 'button.btnActaPC', function () {
-    var datos = tableComputador.row($(this).parents('tr')).data();
+    let datos = tableComputador.row($(this).parents('tr')).data();
 
-    //TODO: Crear proceso de generar y subir actas
+    Swal.fire({
+        icon: 'question',
+        title: '¿Qué deseas hacer?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: 'black',
+        denyButtonColor: 'black',
+        cancelButtonColor: 'black',
+        confirmButtonText: 'Generar acta',
+        denyButtonText: 'Subir acta',
+        cancelButtonText: 'Visualizar actas'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let ajaxUrl = base_url + '/Computadores/generateActa';
 
-    if (datos.estado.includes('Pendiente')) {
-        Swal.fire({
-            icon: 'question',
-            title: 'Qué deseas hacer?',
-            showDenyButton: true,
-            confirmButtonColor: 'black',
-            denyButtonColor: 'black',
-            confirmButtonText: 'Generar acta',
-            denyButtonText: 'Subir acta',
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let ajaxUrl = base_url + '/Computadores/generateActa';
+            $.ajax({
+                type: 'POST',
+                url: ajaxUrl,
+                data: datos,
+                success: function (response) {
+                    let objData = JSON.parse(response);
 
-                $.ajax({
-                    type: 'POST',
-                    url: ajaxUrl,
-                    data: datos,
-                    success: function (response) {
-                        let objData = JSON.parse(response);
-
-                        if (objData.status) {
-                            window.open(base_url + '/GenerarActa');
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Hubo un error al generar el acta.'
-                            });
-                        }
+                    if (objData.status) {
+                        window.open(base_url + '/GenerarActa');
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Hubo un error al generar el acta.'
+                        });
                     }
-                });
-            } else if (result.isDenied) {
-                let ajaxUrl = base_url + '/Computadores/getActaModal';
+                }
+            });
+        } else if (result.isDenied) {
+            let ajaxUrl = base_url + '/Computadores/getActaModal';
 
-                $.ajax({
-                    type: 'POST',
-                    url: ajaxUrl,
-                    data: datos,
-                    success: function (response) {
-                        document.querySelector("#contentAjax").innerHTML = response;
-                        $('.modalCargueActas').modal('show');
-                        bsCustomFileInput.init();
+            $.ajax({
+                type: 'POST',
+                url: ajaxUrl,
+                data: datos,
+                success: function (response) {
+                    document.querySelector("#contentAjax").innerHTML = response;
+                    $('.modalCargueActas').modal('show');
+                    bsCustomFileInput.init();
 
-                        $('#formCargueActa').on('submit', function (e) {
-                            e.preventDefault();
+                    $('#formCargueActa').on('submit', function (e) {
+                        e.preventDefault();
 
-                            if ($('#fileActa').val() != '') {
-                                let formData = new FormData(document.getElementById('formCargueActa'));
-                                let ajaxUrl = base_url + '/Computadores/uploadActa/' + $('#serialActa').val();
+                        if ($('#fileActa').val() != '') {
+                            let formData = new FormData(document.getElementById('formCargueActa'));
+                            let ajaxUrl = base_url + '/Computadores/uploadActa/' + $('#serialActa').val();
 
-                                $.ajax({
-                                    type: "POST",
-                                    url: ajaxUrl,
-                                    data: formData,
-                                    dataType: "html",
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    success: function (response) {
-                                        let objData = JSON.parse(response);
+                            $.ajax({
+                                type: "POST",
+                                url: ajaxUrl,
+                                data: formData,
+                                dataType: "html",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function (response) {
+                                    let objData = JSON.parse(response);
 
-                                        if (objData.status) {
-                                            $('.modalCargueActas').modal('hide');
+                                    if (objData.status) {
+                                        $('.modalCargueActas').modal('hide');
+                                        tableComputador.ajax.reload();
+
+                                        if (objData.warning) {
                                             Swal.fire({
-                                                icon: 'success',
+                                                icon: 'warning',
                                                 text: objData.msg
                                             });
                                         } else {
                                             Swal.fire({
-                                                icon: 'error',
-                                                text: objData.msg
-                                            });
-                                        }
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Selecciona un archivo'
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-        });
-    } else if (datos.estado.includes('Entregado')) {
-        Swal.fire({
-            icon: 'question',
-            title: 'Qué deseas hacer?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonColor: 'black',
-            denyButtonColor: 'black',
-            cancelButtonColor: 'black',
-            confirmButtonText: 'Generar acta',
-            denyButtonText: 'Subir acta',
-            cancelButtonText: 'Visualizar acta'
-        }).then((result) => {
-            console.log(result);
-            if (result.isConfirmed) {
-                let ajaxUrl = base_url + '/Computadores/generateActa';
-
-                $.ajax({
-                    type: 'POST',
-                    url: ajaxUrl,
-                    data: datos,
-                    success: function (response) {
-                        let objData = JSON.parse(response);
-
-                        if (objData.status) {
-                            window.open(base_url + '/GenerarActa');
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                text: 'Hubo un error al generar el acta.'
-                            });
-                        }
-                    }
-                });
-            } else if (result.isDenied) {
-                let ajaxUrl = base_url + '/Computadores/getActaModal';
-
-                $.ajax({
-                    type: 'POST',
-                    url: ajaxUrl,
-                    data: datos,
-                    success: function (response) {
-                        document.querySelector("#contentAjax").innerHTML = response;
-                        $('.modalCargueActas').modal('show');
-                        bsCustomFileInput.init();
-
-                        $('#formCargueActa').on('submit', function (e) {
-                            e.preventDefault();
-
-                            if ($('#fileActa').val() != '') {
-                                let formData = new FormData(document.getElementById('formCargueActa'));
-
-                                let ajaxUrl = base_url + '/Computadores/uploadActa';
-
-                                $.ajax({
-                                    type: "POST",
-                                    url: ajaxUrl,
-                                    data: formData,
-                                    dataType: "html",
-                                    cache: false,
-                                    contentType: false,
-                                    processData: false,
-                                    success: function (response) {
-                                        let objData = JSON.parse(response);
-
-                                        if (objData.status) {
-                                            $('.modalCargueActas').modal('hide');
-                                            Swal.fire({
                                                 icon: 'success',
                                                 text: objData.msg
                                             });
-                                        } else {
-                                            Swal.fire({
-                                                icon: 'error',
-                                                text: objData.msg
-                                            });
                                         }
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            text: objData.msg
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Selecciona un archivo'
+                            });
+                        }
+                    });
+                }
+            });
+        } else if (result.isDismissed && result.dismiss == 'cancel') {
+            let ajaxUrl = base_url + '/Computadores/getActaModal';
+
+            $.ajax({
+                type: 'POST',
+                url: ajaxUrl,
+                data: datos,
+                success: function (response) {
+                    document.querySelector("#contentAjax").innerHTML = response;
+
+                    let tableActas = $('#tableActas').DataTable({
+                        aProccesing: true,
+                        aServerSide: true,
+                        language: {
+                            'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                        },
+                        ajax: {
+                            'url': base_url + '/Computadores/getActas/' + datos.serial,
+                            'dataSrc': ''
+                        },
+                        columnDefs: [
+                            { 'className': 'dt-center', 'targets': '_all' }
+                        ],
+                        columns: [
+                            { 'data': 'numeracion' },
+                            { 'data': 'id' },
+                            { 'data': 'funcionario' },
+                            { 'data': 'responsable' },
+                            { 'data': 'fecha_cargue' },
+                            { 'data': 'acciones' }
+                        ],
+                        responsive: true,
+                        bDestroy: true,
+                        autoWidth: false,
+                        iDisplayLength: 10,
+                        order: [[1, 'desc']],
+                        initComplete: function () {
+                            $('#tableActas').on('click', 'button.btnViewActa', function () {
+                                let datos = tableActas.row($(this).parents('tr')).data();
+
+                                let ajaxUrl = base_url + '/Computadores/viewActa/' + datos.id;
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: ajaxUrl,
+                                    success: function (response) {
+                                        document.querySelector("#contentAjaxViewActa").innerHTML = response;
+
+                                        $('.modalViewActaPDF').modal('show');
                                     }
                                 });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    text: 'Selecciona un archivo'
-                                });
+                            });
+                        }
+                    });
+                    tableActas.on('order.dt search.dt', function () {
+                        let i = 1;
+
+                        tableActas.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                            this.data(i++);
+                        });
+                    }).draw();
+
+                    $('.modalViewActas').modal('show');
+                }
+            });
+        }
+    });
+});
+
+$('#tableComputador').on('click', 'button.btnViewActaPC', function () {
+    let datos = tableComputador.row($(this).parents('tr')).data();
+    let ajaxUrl = base_url + '/Computadores/getActaModal';
+
+    $.ajax({
+        type: 'POST',
+        url: ajaxUrl,
+        data: datos,
+        success: function (response) {
+            document.querySelector("#contentAjax").innerHTML = response;
+
+            let tableActas = $('#tableActas').DataTable({
+                aProccesing: true,
+                aServerSide: true,
+                language: {
+                    'url': '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+                },
+                ajax: {
+                    'url': base_url + '/Computadores/getActas/' + datos.serial,
+                    'dataSrc': ''
+                },
+                columnDefs: [
+                    { 'className': 'dt-center', 'targets': '_all' }
+                ],
+                columns: [
+                    { 'data': 'numeracion' },
+                    { 'data': 'id' },
+                    { 'data': 'funcionario' },
+                    { 'data': 'responsable' },
+                    { 'data': 'fecha_cargue' },
+                    { 'data': 'acciones' }
+                ],
+                responsive: true,
+                bDestroy: true,
+                autoWidth: false,
+                iDisplayLength: 10,
+                order: [[1, 'desc']],
+                initComplete: function () {
+                    $('#tableActas').on('click', 'button.btnViewActa', function () {
+                        let datos = tableActas.row($(this).parents('tr')).data();
+
+                        let ajaxUrl = base_url + '/Computadores/viewActa/' + datos.id;
+
+                        $.ajax({
+                            type: 'GET',
+                            url: ajaxUrl,
+                            success: function (response) {
+                                document.querySelector("#contentAjaxViewActa").innerHTML = response;
+
+                                $('.modalViewActaPDF').modal('show');
                             }
                         });
-                    }
+                    });
+                }
+            });
+            tableActas.on('order.dt search.dt', function () {
+                let i = 1;
+
+                tableActas.cells(null, 0, { search: 'applied', order: 'applied' }).every(function (cell) {
+                    this.data(i++);
                 });
-            } else if (result.isDismissed && result.dismiss == 'cancel') {
-                Swal.fire('Viendo acta')
-            }
-        });
-    } else if (datos.estado.includes("Disponible")) {
-        Swal.fire({
-            icon: 'error',
-            text: 'El equipo está disponible, no necesita acta',
-            showConfirmButton: false,
-            toast: true,
-            position: 'top-end',
-            timerProgressBar: true,
-            timer: 1500
-        });
-    } else if (datos.estado.includes('Bogeda')) {
-        Swal.fire({
-            icon: 'error',
-            text: 'El equipo está en bodega, no necesita acta',
-            showConfirmButton: false,
-            toast: true,
-            position: 'top-end',
-            timerProgressBar: true,
-            timer: 1500
-        });
-    }
+            }).draw();
+
+            $('.modalViewActas').modal('show');
+        }
+    });
 });

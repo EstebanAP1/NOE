@@ -13,6 +13,17 @@ class ComentariosModel extends MySql
         $request = $this->select($sql);
 
         if (!empty($request)) {
+            if ($datos['estado'] == 'Entregado') {
+                $sql_update_estado = "UPDATE equipo SET estado = ? WHERE serial = '{$datos['serial']}'";
+                $arrDataEstado = array('Pendiente');
+                $this->update($sql_update_estado, $arrDataEstado);
+            }
+
+            if ($datos['tipo_dispositivo'] == 'Funcionario') {
+                $sql = "UPDATE equipo SET fecha_asignacion = NOW() WHERE serial = ?";
+                $arrData = array($datos['serial']);
+                $this->update($sql, $arrData);
+            }
             $sql_insert = "INSERT INTO comentarios(serial_equipo,responsable,tipo_dispositivo,comentario,serial_anterior,serial_nuevo)
             VALUES (?,?,?,?,?,?)";
             $arrData = array(
@@ -32,9 +43,9 @@ class ComentariosModel extends MySql
         if (!empty($request)) {
             $sql = "UPDATE comentarios SET comentario = ? WHERE id_comentario = ?";
             $arrData = array($comentario, $id);
-            return $this->insert($sql, $arrData);
+            return $this->update($sql, $arrData);
         } else {
-            return -1;
+            return 0;
         }
     }
 
@@ -44,6 +55,12 @@ class ComentariosModel extends MySql
         INNER JOIN usuario u ON c.responsable = u.id_user 
         WHERE c.serial_equipo = '{$serial}'";
         return $this->selectAll($sql);
+    }
+
+    public function selectFuncionario(string $cedula)
+    {
+        $sql = "SELECT CONCAT(nombre1,' ',nombre2,' ',apellido1,' ',apellido2) as 'nom_funcionario' FROM funcionario WHERE num_doc = '{$cedula}'";
+        return $this->select($sql);
     }
 }
 ?>

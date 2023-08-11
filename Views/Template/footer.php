@@ -29,9 +29,66 @@
 <!-- Template scripts -->
 <script src="<?= media() ?>/js/main.min.js"></script>
 <?php
-if ($data['page_name'] == 'Computadores') {
+if ($data['page_name'] == 'Computadores' || $data['page_name'] == 'Mantenimientos') {
     ?>
     <script src="<?= media() ?>/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+    <?php
+}
+if ($data['page_name'] == 'Home') {
+    ?>
+    <script src="<?= media() ?>\plugins\chart.js\chart.umd.min.js"></script>
+    <script>
+        $(function () {
+            const ctx = document.getElementById('myChart');
+            const ctx2 = document.getElementById('myChart2');
+
+            const char1 = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Nacional', 'Barranquilla', 'Guajira', 'Boyacá', 'Bolivar', 'Cesar', 'Meta'],
+                    datasets: [{
+                        label: 'Escritorio',
+                        data: [12, 19, 3, 5, 2, 3, 2],
+                        borderWidth: 1,
+                        borderColor: 'rgba(51, 51, 52, 0.8)',
+                        backgroundColor: 'rgba(51, 51, 52, 0.5)'
+                    },
+                    {
+                        label: 'Portátil',
+                        data: [2, 5, 4, 16, 19, 1, 2],
+                        borderWidth: 1,
+                        borderColor: 'rgba(200, 200, 255, 0.5)',
+                        backgroundColor: 'rgba(200, 200, 255, 0.7)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    datasets: [{
+                        label: '# of Data',
+                        data: [12, 19, 3, 5, 2, 3],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <?php
 }
 ?>

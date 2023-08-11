@@ -15,7 +15,7 @@ class Home extends Controllers
     {
         $data = array(
             'page_tag' => 'NOE',
-            'page_title' => 'Página principal',
+            'page_title' => 'Inicio',
             'page_name' => 'Home',
             'nav_father' => ''
         );

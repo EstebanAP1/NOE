@@ -14,7 +14,7 @@ class Computadores extends Controllers
     public function computadores()
     {
         $data = array(
-            'page_tag' => 'NOE - PCs',
+            'page_tag' => 'NOE - Computadores',
             'page_title' => 'Gestión de computadores',
             'page_name' => 'Computadores',
             'nav_father' => 'Equipos',
@@ -71,8 +71,9 @@ class Computadores extends Controllers
         echo $html;
     }
 
-    public function getSelectModelos(int $cod_marca)
+    public function getSelectModelos($cod_marca)
     {
+        $cod_marca = strClean($cod_marca);
         $html = '';
         $arrData = $this->model->selectModelos($cod_marca);
         if (count($arrData) > 0) {
@@ -117,8 +118,7 @@ class Computadores extends Controllers
                     'estado' => strClean($_POST['txtEstado']),
                     'seccional' => strClean($_POST['listSeccional']),
                     'municipio' => strClean($_POST['listMunicipio']),
-                    'cod_funcionario' => strClean($_POST['listFuncionario']),
-                    'asignado_por' => $_SESSION['userData']['id_user']
+                    'cod_funcionario' => strClean($_POST['listFuncionario'])
                 );
 
                 $datos['bateria'] = $datos['tipo'] == 'PORTATIL' ? 'INTEGRADA' : 'N/A';
@@ -166,30 +166,46 @@ class Computadores extends Controllers
         $arrData = $this->model->selectComputadores();
 
         for ($i = 0; $i < count($arrData); $i++) {
-            if ($arrData[$i]["estado"] == 'Disponible') {
-                $arrData[$i]["estado"] = '<span class="badge badge-info">Disponible</span>';
+            if ($arrData[$i]['estado'] == 'Disponible' || $arrData[$i]['estado'] == 'Bodega') {
+                $arrData[$i]['acciones'] = '
+                <div class="text-center">
+                    <button class="btn btn-dark btn-sm btnViewActaPC">
+                        <i class="fas fa-file"></i>
+                    </button>
+                    <button class="btn btn-dark btn-sm btnViewPC">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-dark btn-sm btnEditPC">
+                        <i class="fas fa-pen-to-square"></i>
+                    </button>
+                </div>
+                ';
+            } else {
+                $arrData[$i]['acciones'] = '
+                <div class="text-center">
+                    <button class="btn btn-dark btn-sm btnActaPC">
+                        <i class="fas fa-file"></i>
+                    </button>
+                    <button class="btn btn-dark btn-sm btnViewPC">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-dark btn-sm btnEditPC">
+                        <i class="fas fa-pen-to-square"></i>
+                    </button>
+                </div>
+                ';
+            }
+
+            if ($arrData[$i]['estado'] == 'Disponible') {
+                $arrData[$i]['estado'] = '<span class="badge badge-info">Disponible</span>';
             } else if ($arrData[$i]['estado'] == 'Pendiente') {
-                $arrData[$i]["estado"] = '<span class="badge badge-warning">Pendiente</span>';
+                $arrData[$i]['estado'] = '<span class="badge badge-danger">Pendiente</span>';
             } else if ($arrData[$i]['estado'] == 'Bodega') {
-                $arrData[$i]["estado"] = '<span class="badge badge-dark">Bogeda</span>';
+                $arrData[$i]['estado'] = '<span class="badge badge-dark">Bogeda</span>';
             } else if ($arrData[$i]['estado'] == 'Entregado') {
-                $arrData[$i]["estado"] = '<span class="badge badge-success">Entregado</span>';
+                $arrData[$i]['estado'] = '<span class="badge badge-success">Entregado</span>';
             }
             $arrData[$i]['numeracion'] = '';
-            $arrData[$i]['acciones'] = '
-            <div class="text-center">
-                <button class="btn btn-success btn-sm btnActaPC">
-                    <i class="fas fa-file"></i>
-                </button>
-                <button class="btn btn-info btn-sm btnViewPC">
-                    <i class="fas fa-eye"></i>
-                </button>
-                <button class="btn btn-warning btn-sm btnEditPC">
-                    <i class="fas fa-pen-to-square"></i>
-                </button>
-            </div>
-            
-            ';
         }
         echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
     }
@@ -200,7 +216,7 @@ class Computadores extends Controllers
         if ($strSerial != '') {
             $arrData = $this->model->selectComputador($strSerial);
             if (empty($arrData)) {
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados.');
             } else {
                 $_SESSION['setComments'] = $arrData;
                 $arrResponse = array('status' => true, 'msg' => $arrData);
@@ -238,32 +254,66 @@ class Computadores extends Controllers
 
     public function uploadActa($serial)
     {
+        $serial = strClean($serial);
         $file = $_FILES['fileActa']['name'];
 
         if ($file != '') {
-            $connection = ftp_connect(FTP_SERVER);
-            $login = ftp_login($connection, FTP_USER, FTP_PASSWORD);
+            $datosEquipo = $this->model->selectComputador($serial);
+            $datosFuncionario = $this->model->selectFuncionario($datosEquipo['num_doc']);
 
-            if ($connection != '' && $login != '') {
-                $datosEquipo = $this->model->selectComputador($serial);
-                $datosFuncionario = $this->model->selectFuncionario($datosEquipo['num_doc']);
-                dep($datosEquipo);
-                $source_file = $_FILES['fileActa']['tmp_name'];
-                $ruta = $datosEquipo[''];
-                if (ftp_put($connection, $ruta, $source_file, FTP_BINARY)) {
-                    $arrResponse = array('status' => true, 'msg' => 'Acta subida correctamente');
-                } else {
-                    $arrResponse = array('status' => false, 'msg' => 'Error al subir el acta');
+            if (!empty($datosEquipo) && !empty($datosFuncionario)) {
+                $archivo = $_FILES['fileActa']['tmp_name'];
+                $ruta = FTP_DIR . '/' . $datosFuncionario['tipo_doc'] . '_' . $datosFuncionario['num_doc'] . '_' . $datosEquipo['serial'] . '_' . date('Y-m-d_h-i-s') . '.pdf';
+
+                $ftp_request = $this->model->uploadActa($archivo, $ruta);
+
+                if ($ftp_request == 1) {
+                    $request = $this->model->insertActa($datosEquipo, $datosFuncionario, $ruta);
+                    if ($request > 0) {
+                        $arrResponse = array('status' => true, 'warning' => false, 'msg' => 'Acta cargada correctamente.');
+                    } else {
+                        $arrResponse = array('status' => true, 'warning' => true, 'msg' => 'Acta cargada correctamente. Error al subir a BD.');
+                    }
+                } else if ($ftp_request == 2) {
+                    $arrResponse = array('status' => false, 'msg' => 'Error al subir el acta.');
+                } else if ($ftp_request == 3) {
+                    $arrResponse = array('status' => false, 'msg' => 'Error al conectarse con el servidor.');
                 }
             } else {
-                $arrResponse = array('status' => false, 'msg' => 'Error al conectar con el servidor');
+                $arrResponse = array('status' => false, 'msg' => 'Error en equipo o funcionario.');
             }
-            ftp_close($connection);
         } else {
-            $arrResponse = array('status' => false, 'msg' => 'Archivo vacío');
+            $arrResponse = array('status' => false, 'msg' => 'Archivo vacío.');
         }
 
         echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function getActas($serial)
+    {
+        $serial = strClean($serial);
+
+        $arrData = $this->model->selectActas($serial);
+
+        for ($i = 0; $i < count($arrData); $i++) {
+            $arrData[$i]['numeracion'] = '';
+
+            $arrData[$i]['acciones'] = '
+                <div class="text-center">
+                    <button class="btn btn-warning btn-sm btnViewActa">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                ';
+        }
+        echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+    }
+
+    public function viewActa($id)
+    {
+        $id = strClean($id);
+        $route = $this->model->selectActaRoute($id);
+        getModal('modalViewActa', $route);
     }
 
     // TODO: COLOCAR EN OTRO CONTROLLER EN EL FUTURO 

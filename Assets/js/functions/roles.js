@@ -13,6 +13,9 @@ $(function () {
             'url': base_url + '/Roles/getRoles',
             'dataSrc': ''
         },
+        columnDefs: [
+            { 'className': 'dt-center', 'targets': '_all' }
+        ],
         columns: [
             { 'data': 'idrol' },
             { 'data': 'nombrerol' },
