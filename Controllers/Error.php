@@ -9,7 +9,8 @@ class Errors extends Controllers
 
     public function notFound()
     {
-        $this->views->getView($this, "error");
+        // $this->views->getView($this, "error");
+        header('location:' . base_url());
     }
 }
 

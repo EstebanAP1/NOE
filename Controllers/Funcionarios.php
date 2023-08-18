@@ -22,7 +22,7 @@ class Funcionarios extends Controllers
         $this->views->getView($this, 'funcionarios', $data);
     }
 
-    public function actualizarDatos()
+    public function actualizarFuncionarios()
     {
         $dataFuncionario = [
             array(

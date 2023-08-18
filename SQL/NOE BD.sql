@@ -61,9 +61,6 @@ CREATE TABLE IF NOT EXISTS `equipo` (
 INSERT INTO `equipo` (`tipo`, `marca`, `modelo`, `serial`, `cpu_tic`, `procesador`, `disco`, `ram`, `pantalla`, `pantalla_tic`, `teclado`, `teclado_tic`, `mouse`, `mouse_tic`, `cargador`, `cargador_tic`, `bateria`, `procedencia`, `seccional`, `municipio`, `funcionario`, `cargo`, `area`, `estado`, `nombre_pc`, `so`, `asignado_por`, `fecha_ingreso`, `ultima_actualizacion`, `fecha_asignacion`, `fecha_cargue_acta`, `fecha_mantenimiento`, `operativo`) VALUES
 	('ESCRITORIO', '1', '1', '123456789', '', 'INTEL I5', '500 GB', '4 GB', 'VKA21311', NULL, '0052172', NULL, '4C990B0', NULL, 'N/A', NULL, 'N/A', 'PROPIO', '13', '13430', '9133526', '154', '56', 'Disponible', 'C010EBOLARM2', 'WINDOWS 10', '1052958284', '2021-02-25 00:00:00', NULL, NULL, NULL, '2021-08-14 10:11:41', 'X');
 	
-DROP TABLE equipo
-
-DELETE FROM equipo
 
 SELECT * FROM equipo
 
@@ -413,26 +410,10 @@ INSERT INTO `seccional` (`cod_seccional`, `nom_seccional`) VALUES
 	('47', 'Magdalena'),
 	('50', 'Meta'),
 	('70', 'Sucre');
-
--- TABLA NOE VIEJO
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id_user` INT(11) NOT NULL DEFAULT 0,
-  `username` varchar(50) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `email` varchar(50) DEFAULT NULL,
-  `telefono` varchar(13) DEFAULT NULL,
-  `foto` varchar(100) DEFAULT NULL,
-  `permisos_acceso` enum('Super Admin','Auxiliar TIC','Almacen') NOT NULL,
-  `status` enum('activo','bloqueado') NOT NULL DEFAULT 'activo',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id_user`) USING BTREE,
-  KEY `level` (`permisos_acceso`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+	
 
 -- Volcando datos para la tabla noe.usuarios: ~31 rows (aproximadamente)
-INSERT INTO `usuarios` (`id_user`, `username`, `password`, `email`, `telefono`, `foto`, `permisos_acceso`, `status`) VALUES
-	(1001995175, 'esteban.padilla ', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5', NULL, NULL, NULL, 'Auxiliar TIC', 'activo');
+
 
 -- PROPUESTAS
 
@@ -459,6 +440,9 @@ CREATE TABLE usuario(
 	PRIMARY KEY(id)
 );
 
+INSERT INTO usuario(id_user,rolid,username,pass) VALUES
+(1001995175, 1, 'esteban.padilla', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5');
+
 SELECT * FROM equipo;
 
 SELECT * FROM usuario
@@ -469,8 +453,6 @@ SELECT id_user FROM usuario WHERE (username = 'esteban.padilla' AND id = 1) OR (
 
 SELECT id_user FROM usuario WHERE username = 'auxiliar.prueba' OR id_user = 2
 
-INSERT INTO usuario(id_user,rolid,username,pass) VALUES
-(1001995175, 1, 'esteban.padilla', '5994471abb01112afcc18159f6cc74b4f511b99806da59b3caf5a9c173cacfc5');
 
 SELECT u.id_user,u.username,CONCAT(f.nombre1,' ',f.nombre2,' ',f.apellido1,' ',f.apellido2) AS 'nombres',r.nombrerol,u.estado FROM usuario u
         INNER JOIN funcionario f ON f.num_doc = id_user
